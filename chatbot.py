@@ -3,6 +3,9 @@ import json
 import pickle
 import numpy as np
 
+import database
+
+
 import nltk
 from nltk.stem import WordNetLemmatizer
 
@@ -54,8 +57,23 @@ def get_response(intents_list, intents_json):
 
     return result
 
-while True:
-    message = input("")
-    ints = predict_class(message)
-    res = get_response(ints, intents)
-    print(res)
+
+def main():
+    # conn, cursor = database.open_db("goonch_db.sqlite")
+
+    while True:
+        conn, cursor = database.open_db("goonch_db.sqlite")
+
+        message = input("")
+        ints = predict_class(message)
+        res = get_response(ints, intents)
+        print(res)
+        database.insert_into_messages_table(cursor,message,1)
+
+
+        database.close_db(conn, cursor)
+
+
+if __name__ == '__main__':
+    import database
+    main()
