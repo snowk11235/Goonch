@@ -1,9 +1,10 @@
-#import selenium
+import pathlib
 from selenium import webdriver
-chrome_driver_path = "C:\Program Files (x86)\chromedriver.exe"
 
+#chrome_driver_path = "C:\Program Files (x86)\chromedriver.exe"
+chrome_driver_path = str(pathlib.Path.cwd() / 'chromedriver.exe')
 import time
-
+import random
 from secrets import fb_username,fb_password
 
 class TinderBot():
@@ -45,7 +46,37 @@ class TinderBot():
         #popup_1 = self.driver
 
 
+    def like(self):
+        self.driver.get('https://tinder.com/app/recs')
+        like_btn = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div[1]/div/div[2]/div[4]/button')
+        like_btn.click()
+
+    def dislike(self):
+        self.driver.get('https://tinder.com/app/recs')
+        dislike_btn = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div[1]/div/div[2]/div[2]/button')
+        dislike_btn.click()
+
+
+    def auto_swipe(self):
+        now = time.time()
+        future = now + 15
+        while time.time() < future:
+            time.sleep(.5)
+            decider = random.randint(1,11)
+            if decider < 10:
+                self.like()
+            else:
+                self.dislike()
+            pass
+
+
+
+    def handle_match_popup(self):
+        self.driver.get('https://tinder.com/app/recs')
+        popup_close_btn = self.driver.find_element_by_xpath('')
+        popup_close_btn.click()
 
 if __name__ == '__main__':
     bot = TinderBot()
-    bot.login_with_fb()
+    #bot.auto_swipe()
+    # bot.login_with_fb()
