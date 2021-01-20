@@ -5,7 +5,7 @@ from selenium import webdriver
 chrome_driver_path = str(pathlib.Path.cwd() / 'chromedriver.exe')
 import time
 import random
-from secrets import fb_username,fb_password
+from secrets import fb_username,fb_password, phone_number
 
 class TinderBot():
     def __init__(self):
@@ -46,13 +46,38 @@ class TinderBot():
         #popup_1 = self.driver
 
 
+    def proto_login(self):
+        self.driver.get('https://tinder.com')
+
+        # open login menu
+        initial_login_btn = self.driver.find_element_by_xpath(
+            '//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div/div/header/div/div[2]/div[2]/button')
+        initial_login_btn.click()
+
+        # account for latency
+        time.sleep(.5)
+
+        # login with phone number
+        phone_number_btn = self.driver.find_element_by_xpath('//*[@id="modal-manager"]/div/div/div[1]/div/div[3]/span/div[3]/button')
+        phone_number_btn.click()
+
+        # number_field = self.driver.find_element_by_xpath('//*[@id="modal-manager"]/div/div/div[1]/div[2]/div/input')
+        # number_field.send_keys(phone_number)
+        #
+        # continue_btn = self.driver.find_element_by_xpath('//*[@id="modal-manager"]/div/div/div[1]/button')
+        # continue_btn.click()
+
+        # Hang until user input
+        input("This is a placeholder until a method to defeat captcha is found\nPress ENTER when done.")
+
+
     def like(self):
-        self.driver.get('https://tinder.com/app/recs')
+        #self.driver.get('https://tinder.com/app/recs')
         like_btn = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div[1]/div/div[2]/div[4]/button')
         like_btn.click()
 
     def dislike(self):
-        self.driver.get('https://tinder.com/app/recs')
+        #self.driver.get('https://tinder.com/app/recs')
         dislike_btn = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div[1]/div/div[2]/div[2]/button')
         dislike_btn.click()
 
@@ -78,5 +103,4 @@ class TinderBot():
 
 if __name__ == '__main__':
     bot = TinderBot()
-    #bot.auto_swipe()
-    # bot.login_with_fb()
+    bot.proto_login()
