@@ -1,3 +1,14 @@
+"""
+TODO:
+-----
+1. Handle "It's a match" pop-ups
+    > reference: https://www.youtube.com/watch?v=lvFAuUcowT4&list=PLEJ0LJh1b0EFxzszGPiWj806N9UinPR6U&index=4&ab_channel=CodeDripbyAaronJack @ 9:00
+2. implement spawn_chatbot_instance()
+    > research threading in Python
+
+"""
+
+
 import pathlib
 import pickle
 from selenium import webdriver
@@ -87,8 +98,13 @@ class TinderBot():
         print("Done.")
 
 
-    def like(self):
+    def open_page(self):
+        self.load_cookies()
         self.driver.get('https://tinder.com/app/recs')
+
+
+    def like(self):
+        #self.driver.get('https://tinder.com/app/recs')
         time.sleep(.5)
         like_btn = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div[1]/div/div[2]/div[4]/button')
         like_btn.click()
@@ -115,15 +131,28 @@ class TinderBot():
 
     def handle_match_popup(self):
         self.driver.get('https://tinder.com/app/recs')
-        popup_close_btn = self.driver.find_element_by_xpath('')
+        popup_close_btn = self.driver.find_element_by_xpath('//*[@id="modal-manager-canvas"]/div/div/div[1]/div/div[4]/button')
         popup_close_btn.click()
+
+
+    def spawn_chatbot_instance(self):
+        ### IN PROGRESS ###
+        # in: https://tinder.com/app/recs
+        #
+        message_list = self.driver.find_element_by_xpath('//*[@id="matchListWithMessages"]/div[2]')
+        # list message opportunities
+        # (at first) for the first five -- spawn off a chatbot thread
+
+
+
 
 if __name__ == '__main__':
     bot = TinderBot()
     bot.manual_login()
+
 """
     try:
-        bot.auto_swipe()
+        bot.open_page()
     except(Exception):
         bot.manual_login()
     bot.like()
