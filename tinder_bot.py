@@ -1,4 +1,5 @@
 import pathlib
+import pickle
 from selenium import webdriver
 
 #chrome_driver_path = "C:\Program Files (x86)\chromedriver.exe"
@@ -10,6 +11,20 @@ from secrets import fb_username,fb_password, phone_number
 class TinderBot():
     def __init__(self):
         self.driver = webdriver.Chrome(chrome_driver_path)
+
+
+    def save_cookies(self):
+        with open("cookies.pkl",'wb') as filehandler:
+            pickle.dump(self.driver.get_cookies(), filehandler)
+
+
+    def load_cookies(self):
+        with open("cookies.pkl", 'rb') as cookies_file:
+            cookies = pickle.load(cookies_file)
+            for cookie in cookies:
+                print(cookie)
+                self.driver.add_cookie(cookie)
+
 
     def login_with_fb(self):
         self.driver.get('https://tinder.com')
@@ -46,12 +61,14 @@ class TinderBot():
         #popup_1 = self.driver
 
 
-    def proto_login(self):
+    def manual_login(self):
+
+        print("logging in to tinder...")
+
         self.driver.get('https://tinder.com')
 
         # open login menu
-        initial_login_btn = self.driver.find_element_by_xpath(
-            '//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div/div/header/div/div[2]/div[2]/button')
+        initial_login_btn = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div/div/header/div/div[2]/div[2]/button')
         initial_login_btn.click()
 
         # account for latency
@@ -61,18 +78,18 @@ class TinderBot():
         phone_number_btn = self.driver.find_element_by_xpath('//*[@id="modal-manager"]/div/div/div[1]/div/div[3]/span/div[3]/button')
         phone_number_btn.click()
 
-        # number_field = self.driver.find_element_by_xpath('//*[@id="modal-manager"]/div/div/div[1]/div[2]/div/input')
-        # number_field.send_keys(phone_number)
-        #
-        # continue_btn = self.driver.find_element_by_xpath('//*[@id="modal-manager"]/div/div/div[1]/button')
-        # continue_btn.click()
-
         # Hang until user input
         input("This is a placeholder until a method to defeat captcha is found\nPress ENTER when done.")
 
+        print("saving cookies...")
+        self.save_cookies()
+
+        print("Done.")
+
 
     def like(self):
-        #self.driver.get('https://tinder.com/app/recs')
+        self.driver.get('https://tinder.com/app/recs')
+        time.sleep(.5)
         like_btn = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div[1]/div/div[2]/div[4]/button')
         like_btn.click()
 
@@ -103,4 +120,12 @@ class TinderBot():
 
 if __name__ == '__main__':
     bot = TinderBot()
-    bot.proto_login()
+    bot.manual_login()
+"""
+    try:
+        bot.auto_swipe()
+    except(Exception):
+        bot.manual_login()
+    bot.like()
+    #bot.auto_swipe()
+"""
