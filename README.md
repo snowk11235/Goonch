@@ -18,7 +18,7 @@ It will then log the conversation into a database to be used for training data.
 
 Goonch was written with extensibility in mind.
 Future directions will include:
-    - Graphical management.
-    - A db migration to postgresql to enable scalability (currently prototyped in SQLITE3).
-    - Cloud deployment to AWS.
+- Graphical management.
+- A db migration to postgresql to enable scalability (currently prototyped in SQLITE3).
+- Cloud deployment to AWS.
                                                       
