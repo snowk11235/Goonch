@@ -13,5 +13,12 @@
     
 
 Goonch is a project with the end goal of yielding dating site conversation data analytics.
-   
+In its current state it will auto-swipe through tinder, accumulating matches, and then spawn off a chatbot instance for the first one.
+It will then log the conversation into a database to be used for training data.
+
+Goonch was written with extensibility in mind.
+Future directions will include:
+    - Graphical management.
+    - A db migration to postgresql to enable scalability (currently prototyped in SQLITE3).
+    - Cloud deployment to AWS.
                                                       
