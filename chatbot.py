@@ -68,7 +68,7 @@ def main():
         ints = predict_class(message)
         res = get_response(ints, intents)
         print(res)
-        database.insert_into_messages_table(cursor,message,1)
+        database.insert_into_messages_table(cursor, message, res, 1)
 
 
         database.close_db(conn, cursor)

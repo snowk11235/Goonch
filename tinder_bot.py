@@ -116,24 +116,106 @@ class TinderBot():
 
 
     def auto_swipe(self):
+        swipes = 0
+        liked = 0
+        disliked = 0
+        matches = 0
+
         now = time.time()
         future = now + 15
         while time.time() < future:
+            #sleep_time = random.randint(1,4)
+            # time.sleep(sleep_time)
             time.sleep(.5)
             decider = random.randint(1,11)
-            if decider < 10:
-                self.like()
-            else:
-                self.dislike()
-            pass
+            try:
+                if decider < 10:
+                    self.like()
+                    liked += 1
+                    print()
+                else:
+                    self.dislike()
+                    disliked += 1
+
+                print("liked/disliked appropriately.")
+                swipes += 1
+                pass
+            except(Exception):
+                try:
+                    self.handle_match_popup()
+                    print("handled a match...")
+                    matches += 1
+                except:
+                    try:
+                        self.handle_super_like_popup()
+                        print("handled a super like")
+                    finally:
+                        self.handle_TinderOnHomescreen_popup()
+        print(f'swipes total: {swipes}\nliked: {liked}\ndisliked: {disliked}\nmatches: {matches}')
+
+
 
 
 
     def handle_match_popup(self):
-        self.driver.get('https://tinder.com/app/recs')
+        # self.driver.get('https://tinder.com/app/recs')
         popup_close_btn = self.driver.find_element_by_xpath('//*[@id="modal-manager-canvas"]/div/div/div[1]/div/div[4]/button')
         popup_close_btn.click()
 
+    def handle_super_like_popup(self):
+        sl_popup_btn = self.driver.find_element_by_xpath('//*[@id="modal-manager"]/div/div/button[1]')
+        sl_popup_btn.click()
+
+
+    def handle_TinderOnHomescreen_popup(self):
+        try:
+            toh_btn = self.driver.find_element_by_xpath('//*[@id="modal-manager"]/div/div/div[2]/button[2]')
+            toh_btn.click()
+        except:
+            print("clicked outside screen")
+            outside_screen = self.driver.find_element_by_xpath('//*[@id="modal-manager"]/div')
+            outside_screen.click()
+
+
+    def interactive(self):
+        while True:
+            print("[1] Iterate autolike")
+            print("[2] Message a sucka")
+            print("[3] Exit")
+            choice = input("> ")
+            if choice == "1":
+                while True:
+                    try:
+                        bot.auto_swipe()
+                    finally:
+                        print("~~~ Follow the stack trace, neo... ~~~")
+
+                    cont = input("Auto-swipe again? y/n")
+                    if cont.lower() != 'y':
+                        break
+            elif choice == "2":
+                self.check_messages()
+            elif choice == "3":
+                exit()
+            else:
+                print("Invalid input!")
+
+
+    def check_messages(self):
+        # click into messages tab
+        messages_tab = self.driver.find_element_by_xpath('//*[@id="messages-tab"]')
+        messages_tab.click()
+
+        message_list = self.driver.find_element_by_xpath('//*[@id="matchListWithMessages"]/div[2]')
+        messages = self.driver.find_elements_by_class_name('messageListItem D(f) Ai(c) Pos(r)--s BdB--s Bdbc($c-divider) focus-background-style messageListItem--isNew')
+        for message in messages:
+            name = message.find_elements_by_class_name('messageListItem__name Fw($semibold) M(0)')
+            print(name)
+
+
+        # click out of messages when finished.
+        # matches_tab = self.driver.find_element_by_xpath('//*[@id="match-tab"]')
+        # matches_tab.click()
 
     def spawn_chatbot_instance(self):
         ### IN PROGRESS ###
@@ -149,12 +231,15 @@ class TinderBot():
 if __name__ == '__main__':
     bot = TinderBot()
     bot.manual_login()
-
+    bot.interactive()
 """
-    try:
-        bot.open_page()
-    except(Exception):
-        bot.manual_login()
-    bot.like()
-    #bot.auto_swipe()
+    while True:
+        try:
+            bot.auto_swipe()
+        finally:
+            print("~~~ Follow the stack trace, neo... ~~~")
+
+        cont = input("Continue? y/n")
+        if cont.lower() != 'y':
+            break
 """

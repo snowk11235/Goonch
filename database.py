@@ -26,6 +26,7 @@ def create_messages_table(cursor: sqlite3.Cursor):
             messageID INTEGER PRIMARY KEY,
             userID INTEGER,
             message TEXT,
+            response TEXT,
             messageDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
             FOREIGN KEY (userID) 
             REFERENCES users(userID)
@@ -37,9 +38,9 @@ def insert_into_users_table(cursor: sqlite3.Cursor, fname: str):
     VALUES(?)''', (fname,))
 
 
-def insert_into_messages_table(cursor: sqlite3.Cursor, message: str, userID: int):
-    cursor.execute('''INSERT INTO messages(message, userID)
-    VALUES(?,?)''', (message, userID))
+def insert_into_messages_table(cursor: sqlite3.Cursor, message: str, response: str, userID: int):
+    cursor.execute('''INSERT INTO messages(message, response, userID)
+    VALUES(?,?,?)''', (message, response, userID))
 
 
 
