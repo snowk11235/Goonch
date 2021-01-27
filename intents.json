@@ -35,7 +35,7 @@
           "context_set" : ""
         },
         {"tag": "sexual",
-          "patterns": ["nudes?", "Lemme see them fat tiddies", "milky milky mommy milkers", "bussy?"],
+          "patterns": [],
           "responses": ["lemme get $5","HEY! I'm a classy broad thank you!"],
           "context_set" : ""
         },

@@ -1,10 +1,8 @@
 """
 TODO:
 -----
-1. Handle "It's a match" pop-ups
-    > reference: https://www.youtube.com/watch?v=lvFAuUcowT4&list=PLEJ0LJh1b0EFxzszGPiWj806N9UinPR6U&index=4&ab_channel=CodeDripbyAaronJack @ 9:00
-2. implement spawn_chatbot_instance()
-    > research threading in Python
+
+spawn_chatbot_instance(). --
 
 """
 
@@ -35,41 +33,6 @@ class TinderBot():
             for cookie in cookies:
                 print(cookie)
                 self.driver.add_cookie(cookie)
-
-
-    def login_with_fb(self):
-        self.driver.get('https://tinder.com')
-        # self.driver.maximize_window()
-
-        # open login menu
-        initial_login_btn = self.driver.find_element_by_xpath('//*[@id="content"]/div/div[1]/div/main/div[1]/div/div/div/div/header/div/div[2]/div[2]/button')
-        initial_login_btn.click()
-
-        #account for latency
-        time.sleep(1)
-
-        #login with facebook
-        fb_login_btn = self.driver.find_element_by_xpath('//*[@id="modal-manager"]/div/div/div[1]/div/div[3]/span/div[2]/button')
-        fb_login_btn.click()
-        time.sleep(1)
-
-        # switch to fb login pop-up
-        base_window = self.driver.window_handles[0]
-        self.driver.switch_to.window(self.driver.window_handles[1])
-
-        # proceed with fb pop-up login
-        email_field = self.driver.find_element_by_xpath('//*[@id="email"]')
-        pass_field = self.driver.find_element_by_xpath('//*[@id="pass"]')
-        secondary_lgn_btn = self.driver.find_element_by_xpath('//*[@id="u_0_0"]')
-
-        email_field.send_keys(fb_username)
-        pass_field.send_keys(fb_password)
-        secondary_lgn_btn.click()
-
-        # switch back to base window
-        self.driver.switch_to.window(base_window)
-
-        #popup_1 = self.driver
 
 
     def manual_login(self):
@@ -207,7 +170,7 @@ class TinderBot():
         messages_tab.click()
 
         message_list = self.driver.find_element_by_xpath('//*[@id="matchListWithMessages"]/div[2]')
-        messages = self.driver.find_elements_by_class_name('messageListItem D(f) Ai(c) Pos(r)--s BdB--s Bdbc($c-divider) focus-background-style messageListItem--isNew')
+        messages = self.driver.find_elements_by_class_name('messageListItem')
         for message in messages:
             name = message.find_elements_by_class_name('messageListItem__name Fw($semibold) M(0)')
             print(name)

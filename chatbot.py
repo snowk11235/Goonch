@@ -1,3 +1,10 @@
+"""
+ATTRIBUTION:
+-------------
+This chatbot and training modules as is are PLACEHOLDERS.
+All credit goes to Neural Nine @ https://www.youtube.com/channel/UC8wZnXYK_CGKlBcZp-GxYPA
+"""
+
 import random
 import json
 import pickle
